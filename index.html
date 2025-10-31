@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Cryptojoke Puzzle</title>
+<style>
+  :root {
+    --teal: #1f9dbf;
+    --gold: #f5b041;
+    --gray: #555;
+    --light-bg: #faf9f6;
+  }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--light-bg);
+    margin: 0;
+    padding: 1.2em;
+    display: flex;
+    justify-content: center;
+  }
+  .puzzle-container {
+    max-width: 640px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 1.5em 1.8em 2em 1.8em;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  h3 {
+    text-align: center;
+    color: var(--teal);
+    margin-top: 0;
+    margin-bottom: 0.4em;
+    font-size: 1.4em;
+  }
+  .instructions {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin-bottom: 1.2em;
+    font-size: 1em;
+  }
+  #cryptogram {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px 10px;
+    font-family: monospace;
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 1.5em;
+  }
+  input[type=text] {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    padding: 0;
+    transition: border 0.2s ease, background 0.2s ease;
+  }
+  input[type=text]:focus {
+    outline: none;
+    border: 1.5px solid var(--teal);
+    background: #e8f8fb;
+  }
+  .button-row {
+    text-align: center;
+  }
+  button {
+    padding: 10px 16px;
+    margin: 6px;
+    border: none;
+    border-radius: 8px;
+    background: var(--gold);
+    color: #333;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+  button:hover {
+    background: #d9951f;
+    color: #fff;
+  }
+  button:active {
+    transform: scale(0.97);
+  }
+  @media (max-width: 480px) {
+    input[type=text] {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+    .puzzle-container {
+      padding: 1.2em;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="puzzle-container">
+    <h3>Daily Cryptojoke</h3>
+    <p class="instructions">Type your guesses below each letter. Your progress is saved automatically.</p>
+    <div id="cryptogram"></div>
+    <div class="button-row">
+      <button id="clearBtn">🔄 Clear My Answers</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const phrase = "FSW ROR DST CZQNTZNLF FOH QH QFQNR? MTZQACT ST FQC LADCDQHROHP OH SOC YOTIR.";
+  const container = document.getElementById("cryptogram");
+  const clearBtn = document.getElementById("clearBtn");
+  let inputs = [];
+
+  // --- Cookie helpers for Clear state ---
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+  }
+  function getCookie(name) {
+    const cname = name + "=";
+    const decoded = decodeURIComponent(document.cookie);
+    const ca = decoded.split(';');
+    for(let c of ca){
+      while(c.charAt(0) === ' ') c = c.substring(1);
+      if(c.indexOf(cname) === 0) return c.substring(cname.length,c.length);
+    }
+    return "";
+  }
+
+  const STORAGE_KEY = "cryptojoke-progress";
+  const CLEAR_FLAG = "cryptojoke-cleared";
+  const isCleared = getCookie(CLEAR_FLAG) === "true";
+  const saved = !isCleared ? JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") : {};
+
+  // --- Build puzzle ---
+  phrase.split(" ").forEach((word, wIndex)=>{
+    const wordDiv = document.createElement("div");
+    wordDiv.style.display = "inline-flex";
+    wordDiv.style.flexWrap = "nowrap";
+
+    word.split("").forEach((ch, cIndex)=>{
+      if(/[A-Z]/.test(ch)){
+        const cell = document.createElement("div");
+        cell.style.display = "flex";
+        cell.style.flexDirection = "column";
+        cell.style.alignItems = "center";
+        cell.style.width = "44px";
+
+        const top = document.createElement("div");
+        top.textContent = ch;
+        top.style.fontWeight = "bold";
+        top.style.marginBottom = "4px";
+        top.style.color = "var(--teal)";
+        top.style.fontSize = "18px";
+
+        const box = document.createElement("input");
+        box.type = "text";
+        box.maxLength = 1;
+        const id = wIndex + "-" + cIndex;
+        if(saved[id]) box.value = saved[id];
+
+        box.addEventListener("input", e => {
+          e.target.value = e.target.value.toUpperCase();
+          saved[id] = e.target.value;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+          setCookie(CLEAR_FLAG, "false", 7);
+        });
+
+        inputs.push({id, box});
+        cell.appendChild(top);
+        cell.appendChild(box);
+        wordDiv.appendChild(cell);
+      } else {
+        const punct = document.createElement("div");
+        punct.textContent = ch;
+        punct.style.marginLeft = "6px";
+        punct.style.fontWeight = "bold";
+        punct.style.color = "var(--teal)";
+        punct.style.fontSize = "18px";
+        wordDiv.appendChild(punct);
+      }
+    });
+    container.appendChild(wordDiv);
+  });
+
+  // --- Clear Answers (localStorage + cookie) ---
+  clearBtn.addEventListener("click", ()=>{
+    inputs.forEach(({box})=>box.value="");
+    localStorage.removeItem(STORAGE_KEY);
+    setCookie(CLEAR_FLAG, "true", 7);
+  });
+})();
+</script>
+</body>
+</html>
