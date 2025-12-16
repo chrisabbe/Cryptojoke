@@ -21,7 +21,6 @@ header h2{margin:4px 0 0;font-size:15px;font-weight:600;}
 
 <header>
   <h1>Daily Cryptojoke — Solution</h1>
-  <h2>{{DAY_LABEL}}</h2>
 </header>
 
 <div class="wrap">
