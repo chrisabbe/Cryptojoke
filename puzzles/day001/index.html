@@ -17,6 +17,22 @@
   padding:10px;
   box-sizing:border-box;
 }
+/* Teal puzzle title bar — matches Sudoku */
+.puzzle-head{
+  background:var(--teal);
+  color:#ffffff;
+  border-bottom:3px solid var(--teal-dark);
+  border-radius:12px 12px 0 0;
+  padding:14px 8px;
+  text-align:center;
+}
+
+.puzzle-head h1{
+  margin:0;
+  font-size:22px;
+  letter-spacing:.4px;
+  font-weight:800;
+}
 
 /* Title inside the white panel */
 .puzzle-title {
@@ -146,7 +162,10 @@ input[type=text]:focus {
   <div class="page-panel">
     <div class="wrap">
       <div class="puzzle-container">
-        <h2 class="puzzle-title">Daily Cryptojoke</h2>
+        <div class="puzzle-head">
+  <h1>Daily Cryptojoke</h1>
+</div>
+
 
         <h3>Crack today’s joke!</h3>
         <div class="instructions">
