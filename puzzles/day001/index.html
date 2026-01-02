@@ -62,19 +62,20 @@
     loadPartial("site-header", "../../common/header.html");
     loadPartial("site-footer", "../../common/footer.html");
   </script>
+  
+<!-- CONFIG MUST COME FIRST -->
+<script>
+  window.CRYPTJOKE_CONFIG = {
+    phrase: "RZO ROGGI SOKQ RBQXOG GYAX GOFFOQR SOPKBFO MR AKF KHQOKGI FRBEEOG.",
+    storageKey: "cryptojoke_day_001",
+    clearFlag: "cryptojoke_day_001_cleared"
+  };
+</script>
 
-  <!-- ========= CRYPTOJOKE CONFIG FOR THIS DAY ========= -->
-  <script>
-    // This is the ONLY per-puzzle part: change these for each new day.
-    window.CRYPTJOKE_CONFIG = {
-      phrase: "RZO ROGGI SOKQ RBQXOG GYAX GOFFOQR SOPKBFO MR AKF KHQOKGI FRBEEOG.",
-      storageKey: "cryptojoke_day_001",
-      clearFlag:  "cryptojoke_day_001_cleared"
-    };
-  </script>
+<!-- Then load shared engine -->
+<script src="../../common/cryptojoke.js"></script>
 
-  <!-- Shared Cryptojoke engine (reads window.CRYPTJOKE_CONFIG) -->
-  <script src="../../common/cryptojoke.js"></script>
+
 
 </body>
 </html>
