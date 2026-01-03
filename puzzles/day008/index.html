@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbox Puzzles — Daily Cryptojoke</title>
+
+  <!-- Shared site shell (yellow background, logo header, footer) -->
+  <link rel="stylesheet" href="../../common/site-shell.css">
+  <!-- Cryptojoke puzzle–specific styling -->
+  <link rel="stylesheet" href="../../common/cryptojoke.css">
+</head>
+
+<body>
+
+  <!-- Shared site header gets injected here -->
+  <div id="site-header"></div>
+
+  <main class="page">
+    <div class="page-panel">
+      <div class="wrap">
+        <div class="puzzle-container">
+
+          <!-- Teal puzzle title bar -->
+          <header class="puzzle-head">
+            <h1>Daily Cryptojoke</h1>
+          </header>
+
+          <h3 class="puzzle-title">Crack today’s joke!</h3>
+          <div class="instructions">
+            Type your guesses below each letter. Progress saves automatically.
+          </div>
+
+          <div id="cryptogram"></div>
+
+          <div class="button-row">
+            <button class="btn" id="clearBtn">Clear My Answers</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared site footer gets injected here -->
+  <div id="site-footer"></div>
+<!-- Load shared header + footer -->
+<script>
+async function loadPartial(containerId, url){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  try{
+    const res = await fetch(url);
+    el.innerHTML = await res.text();
+  }catch(e){
+    console.error("Failed to load partial:", url, e);
+  }
+}
+
+loadPartial("site-header", "../../common/header.html");
+loadPartial("site-footer", "../../common/footer.html");
+</script>
+
+<!-- 🔹 Load shared Cryptojoke engine -->
+<script src="../../common/cryptojoke.js"></script>
+
+<!-- 🔹 Call the puzzle (CONFIG PER-PUZZLE) -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  Cryptojoke.load({
+    id: "day008",
+    phrase: 'ZUKV HUK LQB CIRZKG VRHQMKY HUK IQHHIK RVK VKFGLA, QH EDQIKY FVY EFQY, "UKA, LWY."'
+  });
+});
+</script>
+
+  
+
+</body>
+</html>
